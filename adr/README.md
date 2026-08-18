@@ -34,3 +34,7 @@ BobFull의 전체 기술 의사결정 원본은 Backend 저장소에서 관리�
 이곳의 ADR은 원문 전체 복사본이 아니라 **대표 의사결정의 포트폴리오 요약본**입니다.
 
 세부 구현, 최신 수치, Evidence, 재검토 조건이 충돌할 경우 Backend 저장소의 최신 `develop` ADR과 Evidence를 우선합니다. 전체 19개 ADR을 모두 확인하려면 위 Source of Truth 링크를 이용합니다.
+
+## 다음으로 보기
+
+대표 의사결정이 실제 요청·이벤트·실패 경계에서 어떻게 이어지는지는 **[Flow Lab V3](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)**에서 단계별로 확인할 수 있습니다.
