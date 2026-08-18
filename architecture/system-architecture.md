@@ -22,7 +22,8 @@ flowchart LR
         end
 
         RDS[(RDS MySQL)]
-        REDIS[(ElastiCache Redis)]
+        REDIS[(ElastiCache for Valkey<br/>Redis-compatible)]
+        KAFKA[Kafka EC2<br/>single KRaft broker]
         S3[(S3 Image Bucket)]
         LAMBDA[Image Validation Lambda]
         ECR[(ECR)]
@@ -34,7 +35,6 @@ flowchart LR
         end
     end
 
-    KAFKA[(Kafka)]
     PORTONE[PortOne]
     OPENAI[OpenAI]
     SMTP[SMTP]
@@ -87,8 +87,8 @@ flowchart LR
 ### 데이터 저장소와 메시징
 
 - **RDS MySQL**: 예약, 결제, 환불, 채팅 메시지 등 영속 데이터의 기준 저장소
-- **Redis**: 인증 토큰 상태, 식당 검색 Cache, 다중 App 인스턴스 채팅 실시간 Pub/Sub fan-out
-- **Kafka**: AI Moderation과 Restaurant Feedback Insight의 비동기 후속 처리 경계
+- **ElastiCache for Valkey**: Redis-compatible 공용 저장소로 인증 토큰 상태, 식당 검색 Cache, 다중 App 인스턴스 채팅 실시간 Pub/Sub fan-out에 사용
+- **Kafka 전용 EC2**: AI Moderation과 Restaurant Feedback Insight의 비동기 후속 처리 경계. 현재 단일 KRaft Broker이므로 Kafka 계층 HA까지 보장하지 않음
 - Redis Pub/Sub은 실시간 전달에 사용하고, 단절 중 놓친 채팅 메시지는 DB cursor 조회로 복구합니다.
 
 ### 외부 시스템
@@ -109,6 +109,7 @@ flowchart LR
 
 ### 더 자세히 보기
 
+- [대표 ADR 10선](../adr/README.md)
 - [Flow Lab에서 시스템 흐름 직접 실행하기](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)
 - [Backend 상세 Architecture](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/ARCHITECTURE.md)
 - [Backend AWS 배포 기준](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/deployment/aws-v1-backend.md)
