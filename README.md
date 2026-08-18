@@ -4,6 +4,8 @@
 
 [🏠 Project Home](https://github.com/bobfull-project) · [🔬 Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/) · [⚙️ Backend](https://github.com/bobfull-project/bobfull-backend) · [🖥️ Frontend](https://github.com/bobfull-project/bobfull-frontend)
 
+> 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [대표 ADR 10선](./adr/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
+
 ## Documentation
 
 | 문서 | 내용 |
@@ -11,7 +13,7 @@
 | [System Architecture](./architecture/system-architecture.md) | 운영 기준 전체 시스템 구성 |
 | [API](./api/README.md) | 도메인별 API와 권한 경계 요약 |
 | [ERD](./database/erd.md) | 핵심 데이터 관계 구조 |
-| [ADR](./adr/README.md) | 주요 기술 의사결정 |
+| [ADR](./adr/README.md) | 대표 기술 의사결정 10선 |
 | [Troubleshooting](./troubleshooting/README.md) | 도메인별 문제 분석·해결 기록 |
 
 ## Flow Lab
