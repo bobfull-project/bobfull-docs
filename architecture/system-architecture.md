@@ -1,4 +1,114 @@
 # System Architecture
 
-> BobFull 전체 시스템 아키텍처를 정리하는 문서입니다.
+BobFull의 **운영 기준 전체 시스템 구성**을 포트폴리오 관점에서 한눈에 볼 수 있도록 정리한 문서입니다.
 
+```mermaid
+flowchart LR
+    MEMBER[MEMBER]
+    OWNER[OWNER]
+    ADMIN[ADMIN]
+    CLIENT[Web Client]
+
+    MEMBER --> CLIENT
+    OWNER --> CLIENT
+    ADMIN --> CLIENT
+
+    subgraph AWS[AWS]
+        ALB[Application Load Balancer]
+
+        subgraph BG[Blue / Green App]
+            BLUE[Blue EC2 x2]
+            GREEN[Green EC2 x2]
+        end
+
+        RDS[(RDS MySQL)]
+        REDIS[(ElastiCache Redis)]
+        S3[(S3 Image Bucket)]
+        LAMBDA[Image Validation Lambda]
+        ECR[(ECR)]
+        SSM[SSM / Parameter Store]
+
+        subgraph MON[Monitoring EC2]
+            PROM[Prometheus]
+            GRAFANA[Grafana]
+        end
+    end
+
+    KAFKA[(Kafka)]
+    PORTONE[PortOne]
+    OPENAI[OpenAI]
+    SMTP[SMTP]
+    GITHUB[GitHub Actions]
+
+    CLIENT -->|HTTP / WebSocket| ALB
+    ALB --> BLUE
+    ALB --> GREEN
+
+    BLUE --> RDS
+    GREEN --> RDS
+    BLUE --> REDIS
+    GREEN --> REDIS
+    BLUE --> KAFKA
+    GREEN --> KAFKA
+
+    BLUE --> PORTONE
+    GREEN --> PORTONE
+    BLUE --> OPENAI
+    GREEN --> OPENAI
+    BLUE --> SMTP
+    GREEN --> SMTP
+
+    CLIENT -->|Presigned PUT| S3
+    BLUE -->|Presigned URL / Object Key| S3
+    GREEN -->|Presigned URL / Object Key| S3
+    S3 -->|ObjectCreated| LAMBDA
+    LAMBDA -->|검증 후 최종 Key 승격| S3
+
+    PROM -->|/actuator/prometheus| BLUE
+    PROM -->|/actuator/prometheus| GREEN
+    PROM --> GRAFANA
+
+    GITHUB -->|Build / Push| ECR
+    GITHUB -->|SSM Deploy| BLUE
+    GITHUB -->|SSM Deploy| GREEN
+    SSM --> BLUE
+    SSM --> GREEN
+```
+
+## 핵심 구조
+
+### Blue-Green 애플리케이션 배포
+
+- ALB 뒤에 Blue / Green Target Group을 두고 각 환경은 App EC2 2대로 구성합니다.
+- 평상시에는 Active 환경만 서비스하고, 배포 시 Inactive 환경을 기동해 동일 이미지를 배포합니다.
+- Target Group Health Check와 외부 검증을 통과한 뒤 Listener Weight를 전환합니다.
+- 전환 후 rollback window 동안 이전 Active 환경을 유지하고, Listener 상태를 다시 확인한 뒤 이전 환경을 중지합니다.
+
+### 데이터 저장소와 메시징
+
+- **RDS MySQL**: 예약, 결제, 환불, 채팅 메시지 등 영속 데이터의 기준 저장소
+- **Redis**: 인증 토큰 상태, 식당 검색 Cache, 다중 App 인스턴스 채팅 실시간 Pub/Sub fan-out
+- **Kafka**: AI Moderation과 Restaurant Feedback Insight의 비동기 후속 처리 경계
+- Redis Pub/Sub은 실시간 전달에 사용하고, 단절 중 놓친 채팅 메시지는 DB cursor 조회로 복구합니다.
+
+### 외부 시스템
+
+- **PortOne**: 결제 상태·금액 검증과 Webhook 처리
+- **OpenAI**: AI Moderation 및 식당 피드백 분석 Provider
+- **SMTP**: 예약 모집 결과 등 이메일 알림
+- **S3 + Lambda**: 식당 이미지를 Presigned URL로 직접 업로드하고, ObjectCreated 이벤트 기반으로 파일을 검증한 뒤 최종 경로로 승격
+
+### CI/CD와 운영
+
+- GitHub Actions에서 검증 및 Docker Image Build 후 ECR에 Commit SHA 태그로 Push합니다.
+- 운영 배포는 SSM Run Command와 Parameter Store를 이용해 App EC2에 동일 이미지를 배포합니다.
+- Prometheus와 Grafana는 App EC2와 분리된 Monitoring EC2에서 동작하며 `/actuator/prometheus`를 수집합니다.
+- Blue-Green 전환 후 Prometheus scrape target도 새 Active EC2 기준으로 갱신합니다.
+
+---
+
+### 더 자세히 보기
+
+- [Flow Lab에서 시스템 흐름 직접 실행하기](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)
+- [Backend 상세 Architecture](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/ARCHITECTURE.md)
+- [Backend AWS 배포 기준](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/deployment/aws-v1-backend.md)
