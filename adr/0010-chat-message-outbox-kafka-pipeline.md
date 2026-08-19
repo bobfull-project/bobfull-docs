@@ -17,6 +17,8 @@
 - AI 실패: 최초 처리 포함 최대 3회 재시도 후 DLT 격리
 - Spring AI 내부 retry는 `max-attempts=1`로 두어 중첩 재시도 방지
 - Moderation partition key는 `messageId`
+- Moderation은 Kafka 소비 순서에 의존하지 않으며, Split Message 판단에 필요한 이전 메시지는 현재 `messageId`를 기준으로 DB `ChatMessage` 이력을 명시적으로 정렬해 재구성
+- 따라서 방 단위 순서를 보장하는 `chatRoomId` 대신 메시지 단위 병렬성을 확보할 수 있는 `messageId`를 partition key로 선택
 
 Kafka는 프로젝트 전체 비동기 처리에 공통 적용하지 않고, **AI 후속 처리에 한정해 사용**합니다.
 
@@ -51,3 +53,5 @@ Kafka 적용 여부는 단순히 `비동기 작업인가`가 아니라 **독립 
 ## 트레이드오프
 
 Kafka Broker·Topic·Consumer·Retry/DLT 운영 복잡도가 추가되고, 현재 Broker는 단일 EC2의 단일 KRaft 구성이라 메시징 계층 HA까지 보장하지 않습니다.
+
+또한 `messageId`를 partition key로 사용하면서 **같은 채팅방 메시지의 Moderation 완료 순서는 보장하지 않습니다.** 대신 현재 Moderation은 Kafka 순서를 정합성 기준으로 사용하지 않고, 필요한 Split Message 이력은 DB를 기준으로 재구성하므로 방 단위 순서 보장보다 Consumer 병렬성을 선택했습니다.
