@@ -13,7 +13,7 @@ BobFull의 전체 기술 의사결정 원본은 Backend 저장소에서 관리�
 | [0002](./0002-payment-completion-idempotency.md) | 결제 완료 API · PortOne 웹훅 멱등성 | 외부 결제와 내부 상태 정합성 |
 | [0005](./0005-domain-boundary-dependency-policy.md) | 도메인 간 의존 경계 | Port/Adapter와 조회 구조의 설계 기준 |
 | [0008](./0008-chat-room-transactional-outbox.md) | ChatRoom Transactional Outbox | 커밋 이후 후속 작업의 유실·중복 대응 |
-| [0010](./0010-chat-message-outbox-kafka-pipeline.md) | AI 후속 처리 Outbox + Kafka | Kafka를 속도가 아닌 운영 경계로 선택한 근거 |
+| [0010](./0010-chat-message-outbox-kafka-pipeline.md) | Kafka 적용 범위 결정 — AI 후속 처리 Outbox + Kafka | 속도보다 적체·Retry/DLT·Consumer 확장성을 기준으로 AI에만 Kafka를 적용한 근거 |
 | [0011](./0011-chat-redis-pubsub.md) | 다중 EC2 채팅 Redis Pub/Sub | 실시간 fan-out과 DB 복구 경계 분리 |
 | [0013](./0013-blue-green-deployment.md) | ALB Blue-Green 배포 | 사전 검증·Traffic Switch·Rollback 실측 |
 | [0015](./0015-no-app-auto-scaling.md) | 측정 후 Auto Scaling 미도입 | 기술을 추가하지 않은 결정도 실측으로 설명 |
