@@ -10,6 +10,9 @@
 
 BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달 경로, Blue-Green App, 데이터 저장소, Kafka, 모니터링, CI/CD, 외부 서비스**를 함께 표시합니다.
 
+<img width="1642" height="952" alt="image" src="https://github.com/user-attachments/assets/5a1371a7-7486-4fca-8a8a-43f8f1c44995" />
+
+
 ```mermaid
 flowchart LR
     U[Users] --> R53[Route 53]
