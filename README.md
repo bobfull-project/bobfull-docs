@@ -12,48 +12,6 @@ BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달
 
 <img width="1642" height="952" alt="image" src="https://github.com/user-attachments/assets/5a1371a7-7486-4fca-8a8a-43f8f1c44995" />
 
-
-```mermaid
-flowchart LR
-    U[Users] --> R53[Route 53]
-    R53 --> CF[CloudFront]
-    CF --> FES3[S3 Frontend]
-    R53 --> ALB[ALB]
-
-    subgraph APP[Blue-Green Application]
-        B[Blue EC2 x2]
-        G[Green EC2 x2]
-    end
-
-    ALB --> B
-    ALB --> G
-
-    B --> RDS[(RDS MySQL)]
-    G --> RDS
-    B --> REDIS[(ElastiCache Valkey)]
-    G --> REDIS
-    B --> KAFKA[Kafka EC2]
-    G --> KAFKA
-
-    B --> EXT[PortOne / OpenAI / SMTP]
-    G --> EXT
-
-    B --> IMG[S3 Image Bucket]
-    G --> IMG
-    IMG --> LAMBDA[Image Validation Lambda]
-
-    MON[Prometheus / Grafana] --> B
-    MON --> G
-    MON --> SLACK[Slack Alert]
-
-    CI[GitHub Actions] --> ECR[ECR]
-    CI --> SSM[SSM / Parameter Store]
-    ECR --> B
-    ECR --> G
-    SSM --> B
-    SSM --> G
-```
-
 > 평시에는 Blue/Green 중 **Active App EC2 2대만 서비스**하며, 배포 시 Inactive 환경을 기동해 동일 이미지를 배포·검증한 뒤 ALB Weight를 전환합니다.  
 > RDS는 현재 **Single-AZ**, Kafka는 **단일 KRaft Broker**로 구성되어 있어 해당 계층의 HA까지 주장하지 않습니다.
 
