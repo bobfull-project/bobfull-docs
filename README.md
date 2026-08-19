@@ -6,6 +6,56 @@
 
 > 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [대표 ADR 10선](./adr/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
 
+## System Architecture
+
+BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달 경로, Blue-Green App, 데이터 저장소, Kafka, 모니터링, CI/CD, 외부 서비스**를 함께 표시합니다.
+
+```mermaid
+flowchart LR
+    U[Users] --> R53[Route 53]
+    R53 --> CF[CloudFront]
+    CF --> FES3[S3 Frontend]
+    R53 --> ALB[ALB]
+
+    subgraph APP[Blue-Green Application]
+        B[Blue EC2 x2]
+        G[Green EC2 x2]
+    end
+
+    ALB --> B
+    ALB --> G
+
+    B --> RDS[(RDS MySQL)]
+    G --> RDS
+    B --> REDIS[(ElastiCache Valkey)]
+    G --> REDIS
+    B --> KAFKA[Kafka EC2]
+    G --> KAFKA
+
+    B --> EXT[PortOne / OpenAI / SMTP]
+    G --> EXT
+
+    B --> IMG[S3 Image Bucket]
+    G --> IMG
+    IMG --> LAMBDA[Image Validation Lambda]
+
+    MON[Prometheus / Grafana] --> B
+    MON --> G
+    MON --> SLACK[Slack Alert]
+
+    CI[GitHub Actions] --> ECR[ECR]
+    CI --> SSM[SSM / Parameter Store]
+    ECR --> B
+    ECR --> G
+    SSM --> B
+    SSM --> G
+```
+
+> 평시에는 Blue/Green 중 **Active App EC2 2대만 서비스**하며, 배포 시 Inactive 환경을 기동해 동일 이미지를 배포·검증한 뒤 ALB Weight를 전환합니다.  
+> RDS는 현재 **Single-AZ**, Kafka는 **단일 KRaft Broker**로 구성되어 있어 해당 계층의 HA까지 주장하지 않습니다.
+
+**[▶ 상세 System Architecture와 책임 경계 보기](./architecture/system-architecture.md)**
+
 ## Documentation
 
 | 문서 | 내용 |
