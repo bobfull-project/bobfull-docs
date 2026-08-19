@@ -1,0 +1,49 @@
+name: Sync Flow Lab from Backend
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/sync-flow-lab.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout docs
+        uses: actions/checkout@v4
+
+      - name: Fetch latest Flow Lab runtime files from backend develop
+        run: |
+          git clone --depth 1 --branch develop https://github.com/bobfull-project/bobfull-backend.git /tmp/bobfull-backend
+          SOURCE=/tmp/bobfull-backend/docs/flow-lab/v3/operations-flow-lab
+          TARGET=flow-lab/v3/operations-flow-lab
+
+          # Docs 전용 README는 보존하고 실제 공개 화면을 구성하는 정적 파일만 동기화한다.
+          for file in index.html app.js scenario-data.js style.css; do
+            cp "$SOURCE/$file" "$TARGET/$file"
+          done
+
+      - name: Commit sync when changed
+        run: |
+          if git diff --quiet -- \
+            flow-lab/v3/operations-flow-lab/index.html \
+            flow-lab/v3/operations-flow-lab/app.js \
+            flow-lab/v3/operations-flow-lab/scenario-data.js \
+            flow-lab/v3/operations-flow-lab/style.css; then
+            echo "Flow Lab runtime files are already up to date."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add \
+            flow-lab/v3/operations-flow-lab/index.html \
+            flow-lab/v3/operations-flow-lab/app.js \
+            flow-lab/v3/operations-flow-lab/scenario-data.js \
+            flow-lab/v3/operations-flow-lab/style.css
+          git commit -m "docs: sync Flow Lab runtime from backend develop"
+          git push
