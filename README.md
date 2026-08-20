@@ -4,7 +4,7 @@
 
 [🏠 Project Home](https://github.com/bobfull-project) · [🔬 Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/) · [⚙️ Backend](https://github.com/bobfull-project/bobfull-backend) · [🖥️ Frontend](https://github.com/bobfull-project/bobfull-frontend)
 
-> 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [대표 ADR 10선](./adr/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
+> 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [대표 ADR 10선](./adr/README.md) → [Performance](./performance/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
 
 ## System Architecture
 
@@ -25,6 +25,7 @@ BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달
 | [API](./api/README.md) | 도메인별 API와 권한 경계 요약 |
 | [ERD](./database/erd.md) | 핵심 데이터 관계 구조 |
 | [ADR](./adr/README.md) | 대표 기술 의사결정 10선 |
+| [Performance](./performance/README.md) | 실제 측정 기반 주요 성능 개선·기술 비교 |
 | [Troubleshooting](./troubleshooting/README.md) | 도메인별 문제 분석·해결 기록 |
 
 ## Flow Lab
@@ -36,6 +37,7 @@ BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달
 ## 문서 관리 기준
 
 - 상세 구현 계약과 Evidence의 Source of Truth는 [Backend](https://github.com/bobfull-project/bobfull-backend) 저장소입니다.
-- 이 저장소는 Architecture · API · ERD · ADR · Troubleshooting을 포트폴리오 관점에서 읽기 쉽게 정리합니다.
+- 이 저장소는 Architecture · API · ERD · ADR · Performance · Troubleshooting을 포트폴리오 관점에서 읽기 쉽게 정리합니다.
+- Performance는 핵심 결과와 판단만 요약하며, 측정 조건·Raw 결과·재현 방법은 Backend Evidence를 연결합니다.
 - Flow Lab은 Backend의 `docs/flow-lab`을 기준으로 동기화해 GitHub Pages로 공개합니다.
 - Troubleshooting은 각 담당자가 자신의 도메인 사례를 직접 보완합니다.
