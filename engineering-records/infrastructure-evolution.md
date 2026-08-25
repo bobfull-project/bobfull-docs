@@ -82,7 +82,11 @@ App #2 내부 Redis
 - Kafka → 전용 Kafka EC2
 - App EC2 → 애플리케이션 실행 책임에 집중
 
-## 4. 최종 — Application Layer Multi-AZ + Blue-Green
+**단일 App 내부 공유 자원 → App 이중화 + 공유 자원 분리**
+
+![단일 App EC2에서 공유 자원 분리와 Multi-AZ App 구성으로 변경](https://velog.velcdn.com/images/gpekd5/post/b9144db7-d58e-4263-aada-1f4cd053e4b7/image.png)
+
+## 4. 최종 — 애플리케이션 계층 Multi-AZ + Blue-Green
 
 최종 운영 구조에서는 App 서버를 `ap-northeast-2a`, `ap-northeast-2c`에 분산하고 Blue/Green 환경을 각각 2대로 구성했습니다.
 
