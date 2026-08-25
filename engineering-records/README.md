@@ -9,13 +9,15 @@ Velog 글을 시간순으로 그대로 복사하지 않고, 여러 글에 흩어
 | 구분 | 문서 | 핵심 내용 |
 |---|---|---|
 | 인프라 | [[인프라] AWS 인프라 발전 과정](./infrastructure-evolution.md) | V1 단일 EC2에서 최종 Blue-Green App 2대 구조까지 |
-| 배포 | [[배포] Blue-Green 무중단 배포와 롤백](./blue-green-deployment.md) | 단일 배포 중단 문제, 비활성 환경 검증, 트래픽 전환과 롤백 |
-| 운영설정 | [[배포] 운영 환경 분리와 HTTPS 진입 구조](./environment-and-https.md) | Spring Profile, Parameter Store, SSM, ALB/HTTPS |
+| 인프라 | [[인프라] Presigned URL과 Lambda 이미지 검증 파이프라인](./image-upload-pipeline.md) | Browser → S3 직접 업로드와 Lambda 검증 책임 분리 |
+| 장애대응 | [[인프라] 단일 EC2 메모리 장애와 자원 분리](./resource-separation.md) | 메모리 경쟁 장애, Redis·Kafka 분리, App 장애 우회 검증 |
+| 배포 | [[배포] 운영 환경 분리와 HTTPS 진입 구조](./environment-and-https.md) | Spring Profile, Parameter Store, SSM, ALB/HTTPS |
+| 배포 | [[배포] GitHub Actions CI/CD 구축과 배포 과정 최적화](./cicd-evolution.md) | 수동 배포 자동화, 중복 Build·고정 대기·Docker Layer 개선 |
+| 배포 | [[배포] Blue-Green 무중단 배포와 롤백](./blue-green-deployment.md) | 비활성 환경 검증, 트래픽 전환, 자동 롤백과 Connection 절감 |
 | 모니터링 | [[모니터링] 운영 관측 체계 구축](./monitoring-observability.md) | CloudWatch Logs + Prometheus + Grafana + Slack 역할 분리 |
-| 장애대응 | [[인프라] 단일 EC2 메모리 장애와 자원 분리](./resource-separation.md) | 메모리 경쟁 장애, Redis·Kafka 분리, 공유 상태 문제 |
 | 실시간 | [[실시간] 다중 App 채팅과 Redis Pub/Sub](./realtime-multi-app-chat.md) | WebSocket/STOMP 다중 인스턴스 전달과 DB 복구 경계 |
 | 성능 | [[성능] Query·Cache·Hikari 병목과 확장 판단](./performance-and-scaling.md) | 쿼리·인덱스·캐시 실측과 Auto Scaling 미도입 근거 |
-| 최종정리 | [[인프라] 최종 운영 구조와 남은 고가용성 과제](./final-infrastructure-retrospective.md) | 최종 운영 범위, 검증 결과, RDS·Redis·Kafka TODO |
+| 최종정리 | [[인프라] 최종 운영 구조와 남은 고가용성 과제](./final-infrastructure-retrospective.md) | 최종 운영 범위, 실제 검증 캡처, RDS·Redis·Kafka TODO |
 
 ## 읽는 기준
 
@@ -23,6 +25,7 @@ Velog 글을 시간순으로 그대로 복사하지 않고, 여러 글에 흩어
 - 상세 구현 계약과 원본 Evidence는 [Backend Evidence](https://github.com/bobfull-project/bobfull-backend/tree/develop/docs/evidence/v3)를 기준으로 합니다.
 - ADR 자체가 필요한 결정은 [ADR](../adr/README.md), 성능 수치 중심 문서는 [Performance](../performance/README.md)에서 별도로 확인할 수 있습니다.
 - 전체 운영 구조는 [System Architecture](../architecture/system-architecture.md)를 기준으로 합니다.
+- Velog 캡처는 설명과 가까운 위치에 그대로 연결해, 당시 운영·검증 화면을 함께 볼 수 있게 했습니다.
 
 ## 원본 기록
 
