@@ -16,14 +16,21 @@ CI/CD 자체가 자동화돼 있어도 컨테이너 교체 동안 실제 요청�
 ALB 뒤에 Blue / Green Target Group을 두고, 각 환경을 App EC2 2대로 구성했습니다.
 
 ```text
-평시
-ALB
-└─ Active 환경 App EC2 x2
+                AZ 2a             AZ 2c
 
-배포 시
-Active 환경 x2  ← 기존 운영
-Inactive 환경 x2 ← 신규 버전 배포·검증
+Blue           Blue #1           Blue #2
+Green          Green #1          Green #2
+
+                 총 App EC2 4대
 ```
+
+Blue와 Green 모두 두 가용 영역에 걸쳐 구성하고, 평시에는 한 환경만 Active로 서비스합니다.
+
+**Blue / Green EC2 구성과 Listener 상태**
+
+![Blue Green App EC2 구성](https://velog.velcdn.com/images/gpekd5/post/27ee7dc5-7a6c-4db8-be79-0c5636bea8e1/image.png)
+
+![ALB Listener Blue 100 Green 0](https://velog.velcdn.com/images/gpekd5/post/ed5e28ec-1084-498e-a69a-237748da29ac/image.png)
 
 비활성 환경에 새 이미지를 먼저 배포한 뒤 Readiness와 Target Group Health Check를 확인합니다.
 
@@ -41,22 +48,27 @@ GitHub Actions
   └─ 실패 → 기존 Listener 상태로 롤백
 ```
 
-평시에는 비용과 DB Connection 점유를 줄이기 위해 Inactive 환경을 중지하고, 배포가 필요할 때만 기동합니다.
+**GitHub Actions Blue-Green Workflow**
+
+![GitHub Actions Blue Green Workflow](https://velog.velcdn.com/images/gpekd5/post/0509d14f-b94f-4fa0-b17a-7b97761a622b/image.png)
 
 ## 4. 실제 검증
 
-Blue-Green 전환 중 외부 요청을 연속으로 보낸 결과:
+Blue-Green 전환 전부터 완료까지 외부 엔드포인트에 요청을 연속으로 보낸 결과:
 
-- 외부 요청 검증 `2,787 / 2,787` HTTP 200
+- 외부 요청 `2,787 / 2,787` HTTP 200
 - 실패 `0`
+- 성공률 `100%`
 - 관측 다운타임 `0초`
 
-의도적으로 신규 환경 검증을 실패시켜 롤백한 테스트에서도:
+![Blue Green 배포 중 HTTP 200 연속 유지](https://velog.velcdn.com/images/gpekd5/post/7143526a-9b5a-49ef-a2f3-976089ff10fc/image.png)
 
-- 전체 과정 `2,758 / 2,758` HTTP 200
-- 기존 Listener 상태로 복귀
+정상 배포만 확인하지 않고, 트래픽 전환 이후 외부 API 검증을 의도적으로 실패시켜 자동 롤백 경로도 확인했습니다.
 
-을 확인했습니다.
+- 롤백 전체 과정 `2,758 / 2,758` HTTP 200
+- 외부 검증 실패 시 기존 Listener 상태로 복귀
+
+![외부 검증 실패 후 자동 Rollback Workflow](https://velog.velcdn.com/images/gpekd5/post/5d6a3be8-11c9-44d5-8229-3123b7f48190/image.png)
 
 App EC2 1대를 중지했을 때 외부 API `10 / 10` HTTP 200도 확인했지만, 이 결과는 Blue-Green 자체가 아니라 **ALB + Active App EC2 2대 구성의 런타임 장애 우회 결과**로 구분합니다.
 
@@ -70,7 +82,50 @@ App EC2 1대를 중지했을 때 외부 API `10 / 10` HTTP 200도 확인했지�
 
 > Blue-Green 전환과 롤백 동안 외부 검증 요청에서 실패가 관측되지 않았다.
 
-## 6. 트레이드오프
+## 6. 또 다른 문제 — Inactive도 DB Connection을 유지했다
+
+Blue-Green을 처음 구성했을 때는 Blue 2대와 Green 2대, 총 4대의 App EC2를 항상 실행했습니다.
+
+RDS `PROCESSLIST`를 확인하니 실제 트래픽을 받지 않는 Inactive App도 HikariCP Connection을 유지하고 있었습니다.
+
+```text
+Active App 2대    → 약 20 Connection
+Inactive App 2대  → 약 20 Connection
+
+Threads_connected ≈ 45 / 60
+```
+
+![RDS PROCESSLIST App EC2 4대 Connection 유지](https://velog.velcdn.com/images/gpekd5/post/8a15ddca-f638-4580-bcbd-e3851c7d0e00/image.png)
+
+즉 **Inactive는 트래픽만 받지 않을 뿐 Spring Boot와 HikariCP는 계속 실행 중**이었습니다.
+
+두 선택지를 비교했습니다.
+
+| 선택 | 장점 | 단점 |
+|---|---|---|
+| Inactive 계속 실행 | 즉시 롤백 가능 | EC2 비용 + DB Connection 점유 |
+| Inactive EC2 중지 | 비용·Connection 절감 | 이미 중지한 환경으로 즉시 롤백 어려움 |
+
+## 7. 최종 운영 — Inactive STOP + Rollback Window
+
+최종적으로 두 장점을 절충했습니다.
+
+```text
+평상시
+Active x2   → RUNNING
+Inactive x2 → STOPPED
+
+배포
+Inactive START
+→ 신규 버전 배포·검증
+→ 트래픽 전환
+→ 기존 Active 600초 유지
+→ 문제 없으면 기존 Active STOP
+```
+
+배포 직후 `600초` 동안은 이전 환경이 살아 있으므로, 이 구간에서는 Listener만 되돌리는 빠른 롤백 경로를 유지합니다. 이후에는 이전 환경을 중지해 EC2 비용과 불필요한 DB Connection 점유를 줄입니다.
+
+## 8. 트레이드오프
 
 Blue-Green은 배포 안정성을 높였지만 비용이 사라지는 구조는 아닙니다.
 
@@ -78,8 +133,6 @@ Blue-Green은 배포 안정성을 높였지만 비용이 사라지는 구조는 
 - Blue/Green이 동일 RDS를 사용하므로 DB Connection Budget 고려 필요
 - 신·구 버전이 잠시 함께 존재하므로 DB Schema 하위 호환 필요
 - 애플리케이션 배포가 무중단이어도 RDS·Kafka·Redis 장애까지 해결하는 것은 아님
-
-따라서 Inactive 환경은 평시 중지하고, 배포 성공 후 일정 롤백 구간 동안만 이전 환경을 유지하는 방향으로 운영했습니다.
 
 ## 관련 문서
 
