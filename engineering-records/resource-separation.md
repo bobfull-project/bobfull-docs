@@ -25,6 +25,22 @@ App EC2
 
 CPU가 먼저 포화된 상황이 아니라 메모리 여유가 거의 사라진 상태에서 여러 프로세스가 같은 EC2 자원을 경쟁하고 있었습니다.
 
+### 장애 당시 관측 화면
+
+**Grafana Memory 약 92.76%**
+
+![장애 당시 Grafana Memory 92.76%](https://velog.velcdn.com/images/gpekd5/post/1507c5e1-9366-4ee0-8f44-5a760c0b7ec7/image.png)
+
+**ALB Health Check Timeout / 장애 알림**
+
+![ALB Health Check Timeout 또는 Slack 장애 알림](https://velog.velcdn.com/images/gpekd5/post/9038065c-38d6-46d1-b052-842ee7bbdeb9/image.png)
+
+배포 측면에서도 단일 App EC2에서 기존 컨테이너를 교체하는 동안 대표적으로 약 `40.25초`의 서비스 접근 불가 구간을 관측했습니다.
+
+![단일 EC2 배포 접근 불가 구간 측정](https://velog.velcdn.com/images/gpekd5/post/189f510b-00d8-4d42-9d38-9dbbddcba728/image.png)
+
+> 이 값과 이후 Blue-Green의 관측 다운타임 0초는 측정 위치와 조건이 완전히 동일하지 않아 단순 개선율로 계산하지 않습니다.
+
 ## 2. 장애를 통해 확인한 구조적 문제
 
 단일 서버는 단순했지만 Spring Boot, Redis, Kafka의 장애 경계와 자원 경계가 같았습니다.
@@ -80,7 +96,37 @@ App EC2 #2 ─┘
 
 MSK는 관리 편의성과 고가용성 측면의 장점이 있지만 프로젝트 규모에서는 비용 부담이 커, 현재는 전용 EC2의 단일 Broker를 선택했습니다.
 
-## 4. 개선의 의미
+### 구조 변화
+
+![단일 App EC2에서 공유 자원 분리와 Multi-AZ App 구성으로 변경](https://velog.velcdn.com/images/gpekd5/post/b9144db7-d58e-4263-aada-1f4cd053e4b7/image.png)
+
+## 4. App EC2 이중화 후 장애 우회 검증
+
+공유 자원을 분리한 뒤 App EC2 2대를 서로 다른 가용 영역에 배치했습니다.
+
+- `ap-northeast-2a` → App EC2 #1
+- `ap-northeast-2c` → App EC2 #2
+
+두 Target이 정상 상태인지 먼저 확인했습니다.
+
+![Target Group App EC2 2대 Healthy](https://velog.velcdn.com/images/gpekd5/post/a73b70c4-4a56-48b5-bc0c-03e25d2111b8/image.png)
+
+이후 App #1의 Spring Boot 컨테이너를 직접 중지해 장애를 재현했습니다.
+
+```text
+App EC2 #1 → Unhealthy
+App EC2 #2 → Healthy
+```
+
+![App #1 중지 후 Unhealthy Healthy 상태](https://velog.velcdn.com/images/gpekd5/post/40920431-d7fe-462a-bce2-f3bf4a2e68fb/image.png)
+
+이 상태에서 외부 API를 10회 연속 호출했고 `10 / 10` 모두 HTTP 200으로 처리됐습니다.
+
+![App 한 대 장애 상태의 외부 API 10회 HTTP 200](https://velog.velcdn.com/images/gpekd5/post/262d1090-bc1f-47e7-b85d-174d75fa6f9b/image.png)
+
+이 검증에서 확인한 범위는 **App 한 대가 비정상일 때 ALB가 해당 Target을 제외하고 정상 App으로 요청을 우회할 수 있음**입니다.
+
+## 5. 개선의 의미
 
 이번 분리의 목적은 단순히 서버를 더 쓰는 것이 아니었습니다.
 
@@ -88,10 +134,11 @@ MSK는 관리 편의성과 고가용성 측면의 장점이 있지만 프로젝�
 - App 인스턴스가 늘어나도 Redis 상태를 공유
 - Kafka Broker 생명주기를 App 배포와 분리
 - App 장애가 Redis/Kafka 프로세스와 같은 호스트 자원 경쟁으로 직접 연결되는 범위 축소
+- App 한 대 장애 시 다른 App으로 요청 우회 가능
 
 이 분리가 선행되어야 App EC2를 여러 대로 늘리는 구조가 자연스러워졌습니다.
 
-## 5. 남은 한계
+## 6. 남은 한계
 
 자원을 분리했다고 전체 시스템이 고가용성이 된 것은 아닙니다.
 
