@@ -1,4 +1,4 @@
-# 🧭 Engineering Records
+# 🧭 기술 기록
 
 BobFull 프로젝트를 진행하며 남긴 Velog 기록과 최종 Evidence를 바탕으로, **문제 → 판단 → 적용 → 검증 → 남은 한계** 흐름이 보이도록 다시 정리한 기술 기록입니다.
 
@@ -20,7 +20,7 @@ Velog 글을 시간순으로 그대로 복사하지 않고, 여러 글에 흩어
 ## 읽는 기준
 
 - 이 문서는 **포트폴리오용 서술 기록**입니다.
-- 상세 구현 계약과 Raw Evidence는 [Backend Evidence](https://github.com/bobfull-project/bobfull-backend/tree/develop/docs/evidence/v3)를 기준으로 합니다.
+- 상세 구현 계약과 원본 Evidence는 [Backend Evidence](https://github.com/bobfull-project/bobfull-backend/tree/develop/docs/evidence/v3)를 기준으로 합니다.
 - ADR 자체가 필요한 결정은 [ADR](../adr/README.md), 성능 수치 중심 문서는 [Performance](../performance/README.md)에서 별도로 확인할 수 있습니다.
 - 전체 운영 구조는 [System Architecture](../architecture/system-architecture.md)를 기준으로 합니다.
 
