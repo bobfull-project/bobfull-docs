@@ -49,7 +49,31 @@ App #1의 로컬 STOMP Broker는 App #2의 WebSocket 세션을 알 수 없습니
 - Redis Pub/Sub: 현재 연결된 여러 App 인스턴스에 실시간 전파
 - STOMP: 각 App 내부 WebSocket 세션 전달
 
-## 4. Redis Pub/Sub과 Kafka를 분리해서 사용한 이유
+## 4. 실제 다중 App 환경 검증
+
+App EC2 2대가 실제로 독립 실행되는 환경에서 사용자들이 서로 다른 App에 연결된 상태를 만들고 인스턴스 간 메시지 전달을 확인했습니다.
+
+### 실제 채팅 화면
+
+![다중 App 환경 실제 채팅 화면](https://velog.velcdn.com/images/gpekd5/post/62157471-0805-4cb4-8b41-510097f648f0/image.png)
+
+### App #1에서 Publish
+
+한 EC2에서 `messageId=29`가 Redis Pub/Sub으로 발행되는 로그를 확인했습니다.
+
+![EC2 1 PUBLISHED messageId 29](https://velog.velcdn.com/images/gpekd5/post/c09c88c5-1124-4ba0-88f5-4285de2d99a9/image.png)
+
+### App #2에서 Subscribe
+
+다른 EC2에서 같은 `messageId=29`를 수신하는 로그를 확인했습니다.
+
+![EC2 2 SUBSCRIBED messageId 29](https://velog.velcdn.com/images/gpekd5/post/5bbf0321-9696-4495-b066-9a4736dbc5f4/image.png)
+
+양방향 채팅과 Cross-Instance 전달을 함께 확인했습니다.
+
+> 서버 수만 늘리는 것으로 끝나는 것이 아니라, 기존 애플리케이션의 상태 공유와 인스턴스 간 메시지 전달 구조도 실제 다중 인스턴스 환경에서 검증해야 했습니다.
+
+## 5. Redis Pub/Sub과 Kafka를 분리해서 사용한 이유
 
 프로젝트에는 Redis Pub/Sub과 Kafka가 모두 존재하지만 서로 대체 관계로 사용하지 않았습니다.
 
@@ -60,7 +84,7 @@ App #1의 로컬 STOMP Broker는 App #2의 WebSocket 세션을 알 수 없습니
 
 채팅 전달 자체를 Kafka에 의존시키지 않았고, AI 처리 때문에 사용자 채팅 저장·전달이 늦어지지 않도록 경계를 분리했습니다.
 
-## 5. Pub/Sub이 놓친 메시지는 DB에서 복구
+## 6. Pub/Sub이 놓친 메시지는 DB에서 복구
 
 Redis Pub/Sub은 구독자가 잠시 끊겨 있으면 그동안 발행된 메시지를 나중에 다시 전달해 주는 영속 큐가 아닙니다.
 
@@ -76,7 +100,7 @@ DB cursor 조회
 
 이 구조로 실시간 전파와 영속 복구의 책임을 분리했습니다.
 
-## 6. 검증 범위
+## 7. 검증 범위
 
 다중 App 환경에서 다음을 확인했습니다.
 
