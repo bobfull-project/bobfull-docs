@@ -2,78 +2,10 @@
 
 BobFull의 **운영 기준 전체 시스템 구성**을 포트폴리오 관점에서 한눈에 볼 수 있도록 정리한 문서입니다.
 
-```mermaid
-flowchart LR
-    MEMBER[MEMBER]
-    OWNER[OWNER]
-    ADMIN[ADMIN]
-    CLIENT[Web Client]
+<img width="1642" height="952" alt="BobFull System Architecture" src="https://github.com/user-attachments/assets/5a1371a7-7486-4fca-8a8a-43f8f1c44995" />
 
-    MEMBER --> CLIENT
-    OWNER --> CLIENT
-    ADMIN --> CLIENT
-
-    subgraph AWS[AWS]
-        ALB[Application Load Balancer]
-
-        subgraph BG[Blue / Green App]
-            BLUE[Blue EC2 x2]
-            GREEN[Green EC2 x2]
-        end
-
-        RDS[(RDS MySQL)]
-        REDIS[(ElastiCache for Valkey<br/>Redis-compatible)]
-        KAFKA[Kafka EC2<br/>single KRaft broker]
-        S3[(S3 Image Bucket)]
-        LAMBDA[Image Validation Lambda]
-        ECR[(ECR)]
-        SSM[SSM / Parameter Store]
-
-        subgraph MON[Monitoring EC2]
-            PROM[Prometheus]
-            GRAFANA[Grafana]
-        end
-    end
-
-    PORTONE[PortOne]
-    OPENAI[OpenAI]
-    SMTP[SMTP]
-    GITHUB[GitHub Actions]
-
-    CLIENT -->|HTTP / WebSocket| ALB
-    ALB --> BLUE
-    ALB --> GREEN
-
-    BLUE --> RDS
-    GREEN --> RDS
-    BLUE --> REDIS
-    GREEN --> REDIS
-    BLUE --> KAFKA
-    GREEN --> KAFKA
-
-    BLUE --> PORTONE
-    GREEN --> PORTONE
-    BLUE --> OPENAI
-    GREEN --> OPENAI
-    BLUE --> SMTP
-    GREEN --> SMTP
-
-    CLIENT -->|Presigned PUT| S3
-    BLUE -->|Presigned URL / Object Key| S3
-    GREEN -->|Presigned URL / Object Key| S3
-    S3 -->|ObjectCreated| LAMBDA
-    LAMBDA -->|검증 후 최종 Key 승격| S3
-
-    PROM -->|/actuator/prometheus| BLUE
-    PROM -->|/actuator/prometheus| GREEN
-    PROM --> GRAFANA
-
-    GITHUB -->|Build / Push| ECR
-    GITHUB -->|SSM Deploy| BLUE
-    GITHUB -->|SSM Deploy| GREEN
-    SSM --> BLUE
-    SSM --> GREEN
-```
+> 평시에는 Blue/Green 중 **Active App EC2 2대만 서비스**하며, 배포 시 Inactive 환경을 기동해 동일 이미지를 배포·검증한 뒤 ALB Weight를 전환합니다.  
+> RDS는 현재 **Single-AZ**, Kafka는 **단일 KRaft Broker**이므로 해당 계층의 HA까지 주장하지 않습니다.
 
 ## 핵심 구조
 
@@ -109,7 +41,7 @@ flowchart LR
 
 ### 더 자세히 보기
 
-- [대표 ADR 10선](../adr/README.md)
+- [ADR](../adr/README.md)
 - [Flow Lab에서 시스템 흐름 직접 실행하기](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)
 - [Backend 상세 Architecture](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/ARCHITECTURE.md)
 - [Backend AWS 배포 기준](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/deployment/aws-v1-backend.md)
