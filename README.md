@@ -1,51 +1,85 @@
 # 🍚 BobFull Technical Docs
 
-합석형 좌석 예약 플랫폼 **BobFull(밥풀)**의 기술 문서·포트폴리오 자료 허브입니다.
+합석형 좌석 예약 플랫폼 **BobFull(밥풀)**의 기술 문서·포트폴리오 허브입니다.
 
-[🏠 Project Home](https://github.com/bobfull-project) · [🔬 Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/) · [⚙️ Backend](https://github.com/bobfull-project/bobfull-backend) · [🖥️ Frontend](https://github.com/bobfull-project/bobfull-frontend)
+[🏠 Project Home](https://github.com/bobfull-project) · [⚙️ Backend](https://github.com/bobfull-project/bobfull-backend) · [🖥️ Frontend](https://github.com/bobfull-project/bobfull-frontend) · [🔬 Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)
 
-> 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [기술 기록](./engineering-records/README.md) → [대표 ADR 10선](./adr/README.md) → [Performance](./performance/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
+> 처음 보는 분께는 **[System Architecture](./architecture/system-architecture.md) → [Representative Case Studies](./case-studies/README.md) → [ADR](./adr/README.md) → [Troubleshooting](./troubleshooting/README.md) → [Performance](./performance/README.md) → [Engineering Records](./engineering-records/README.md) → [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)** 순서를 권장합니다.
 
-## System Architecture
+## 1. System Architecture
 
-BobFull의 실제 운영 구성을 한눈에 볼 수 있도록 **Frontend 전달 경로, Blue-Green App, 데이터 저장소, Kafka, 모니터링, CI/CD, 외부 서비스**를 함께 표시합니다.
+BobFull의 실제 운영 구성과 책임 경계를 먼저 확인합니다.
 
-<img width="1642" height="952" alt="image" src="https://github.com/user-attachments/assets/5a1371a7-7486-4fca-8a8a-43f8f1c44995" />
+<img width="1642" height="952" alt="BobFull System Architecture" src="https://github.com/user-attachments/assets/5a1371a7-7486-4fca-8a8a-43f8f1c44995" />
 
 > 평시에는 Blue/Green 중 **Active App EC2 2대만 서비스**하며, 배포 시 Inactive 환경을 기동해 동일 이미지를 배포·검증한 뒤 ALB Weight를 전환합니다.  
-> RDS는 현재 **Single-AZ**, Kafka는 **단일 KRaft Broker**로 구성되어 있어 해당 계층의 HA까지 주장하지 않습니다.
+> RDS는 현재 **Single-AZ**, Kafka는 **단일 KRaft Broker**이므로 해당 계층의 HA까지 주장하지 않습니다.
 
-**[▶ 상세 System Architecture와 책임 경계 보기](./architecture/system-architecture.md)**
+**[▶ System Architecture 상세 보기](./architecture/system-architecture.md)**
 
-## Documentation
+## 2. Representative Case Studies
 
-| 문서 | 내용 |
+프로젝트에서 여러 실험·트러블슈팅·기술 판단을 거쳐 최종 발표용으로 정제한 대표 사례입니다.
+
+| 영역 | Case Study | 핵심 |
+|---|---|---|
+| 고가용성 | [단일 EC2 SPOF → Multi-AZ Blue-Green](./case-studies/spof-to-multi-az-blue-green.md) | 자원 분리부터 무중단 Traffic Switch까지 |
+| 성능 | [조회 인덱스 부재 → 정산 조회 병목 해소](./case-studies/query-index-to-settlement-optimization.md) | Query·Index·Cache·Pool·CPU를 단계적으로 분리 |
+| 거래/이벤트 | [핵심 거래와 후속 작업의 실패 경계](./case-studies/transaction-and-followup-failure-boundary.md) | AFTER_COMMIT → Outbox → Async |
+| AI | [AI 검수 호출 최적화와 우회 검수 보완](./case-studies/ai-moderation-optimization.md) | Rule Fast Path·DB Context·Prompt Injection |
+| Kafka | [Outbox + Async vs Kafka](./case-studies/outbox-async-vs-kafka.md) | 성능이 아니라 Consumer 격리 기준으로 선택 |
+| 설계 | [AFTER_COMMIT·Outbox·Kafka를 나눈 기준](./case-studies/post-payment-processing-strategy.md) | 후속 작업마다 필요한 보장을 구분 |
+
+**[▶ Case Studies 전체 보기](./case-studies/README.md)**
+
+## 3. Documentation Map
+
+| 문서 | 역할 |
 |---|---|
-| [System Architecture](./architecture/system-architecture.md) | 운영 기준 전체 시스템 구성 |
-| [기술 기록](./engineering-records/README.md) | 프로젝트 진행 기록을 문제·판단·적용·검증 흐름으로 재구성한 기술 기록 |
-| [API](./api/README.md) | 도메인별 API와 권한 경계 요약 |
-| [ERD](./database/erd.md) | 핵심 데이터 관계 구조 |
-| [ADR](./adr/README.md) | 대표 기술 의사결정 10선 |
-| [Performance](./performance/README.md) | 실제 측정 기반 주요 성능 개선·기술 비교 |
-| [Troubleshooting](./troubleshooting/README.md) | 도메인별 문제 분석·해결 기록 |
+| [Architecture](./architecture/system-architecture.md) | 최종 운영 구조와 시스템 책임 경계 |
+| [Case Studies](./case-studies/README.md) | `[발표]` 기준 최종 정제 대표 사례 |
+| [ADR](./adr/README.md) | 공식 아키텍처 의사결정과 Project ADR |
+| [Technical Decisions](./decisions/README.md) | 도메인·정책·구현 단위 기술 판단 |
+| [Troubleshooting](./troubleshooting/README.md) | 개별 문제의 원인·해결·검증 기록 |
+| [Performance](./performance/README.md) | 실제 측정 기반 성능 결과와 기술 비교 |
+| [Engineering Records](./engineering-records/README.md) | 프로젝트가 어떻게 발전했는지 보여주는 기술 기록 |
+| [API](./api/README.md) | 도메인별 API와 권한 경계 |
+| [ERD](./database/erd.md) | 핵심 데이터 관계 |
+| [Flow Lab](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/) | 실제 코드/Evidence 기반 백엔드 흐름 시뮬레이션 |
 
-## 기술 기록
+## 4. 문서 역할을 나눈 기준
 
-시간순 작업 일지를 그대로 복사하지 않고 여러 기록에 흩어진 내용을 주제별로 묶었습니다. 인프라·배포·모니터링·실시간 처리·성능 확장 과정과 실제 검증 캡처를 함께 확인할 수 있습니다.
+### Case Study
 
-**[▶ 기술 기록 보기](./engineering-records/README.md)**
+여러 문제·실험·의사결정을 하나의 이야기로 연결한 **최종 포트폴리오 문서**입니다. 5분 기록 보드에서 `[발표]`로 정제된 기록을 우선합니다.
 
-## Flow Lab
+### Troubleshooting
 
-실제 코드와 Evidence를 기반으로 BobFull의 주요 백엔드 흐름을 단계별로 확인할 수 있는 인터랙티브 시뮬레이션입니다.
+하나의 구체적인 실패·버그·병목을 다룹니다. 같은 내용이 Case Study에 포함돼도 삭제하지 않고 **상세 근거 문서**로 연결합니다.
 
-**[▶ Flow Lab V3 실행하기](https://bobfull-project.github.io/bobfull-docs/flow-lab/v3/operations-flow-lab/)**
+### ADR / Technical Decisions
 
-## 문서 관리 기준
+“무슨 문제가 났는가”보다 **왜 이 구조를 선택했는가**에 집중합니다. Backend 번호형 ADR은 공식 Source of Truth로 유지하고, 프로젝트 단위 의사결정은 별도 기록으로 보존합니다.
 
-- 상세 구현 계약과 Evidence의 Source of Truth는 [Backend](https://github.com/bobfull-project/bobfull-backend) 저장소입니다.
-- 이 저장소는 Architecture · 기술 기록 · API · ERD · ADR · Performance · Troubleshooting을 포트폴리오 관점에서 읽기 쉽게 정리합니다.
-- 기술 기록은 Velog 작업 기록을 그대로 복제하지 않고, 최종 구현과 Evidence를 기준으로 주제별 흐름을 재구성합니다.
-- Performance는 핵심 결과와 판단만 요약하며, 측정 조건·Raw 결과·재현 방법은 Backend Evidence를 연결합니다.
-- Flow Lab은 Backend의 `docs/flow-lab`을 기준으로 동기화해 GitHub Pages로 공개합니다.
-- Troubleshooting은 각 담당자가 자신의 도메인 사례를 직접 보완합니다.
+### Performance
+
+측정 수치·조건·Trade-off에 집중합니다. Raw 결과와 재현 절차는 Backend Evidence를 우선합니다.
+
+### Engineering Records
+
+시간순 일지를 복사하지 않고 인프라·배포·모니터링·실시간·성능이 **어떻게 발전했는지**를 주제별로 재구성합니다.
+
+## 5. Source of Truth
+
+- 상세 구현 계약, 최신 코드, 공식 번호형 ADR, Raw Evidence의 Source of Truth는 [bobfull-backend](https://github.com/bobfull-project/bobfull-backend)입니다.
+- 이 저장소는 Architecture · Case Study · ADR · Decisions · Troubleshooting · Performance · Engineering Records를 **읽기 좋은 포트폴리오 구조로 연결**합니다.
+- 같은 내용을 여러 폴더에 복사하지 않고 한 문서를 기준으로 다른 문서에서 링크합니다.
+- 측정하지 않은 개선 수치, 검증하지 않은 HA 범위, 외부 시스템의 보장 범위를 확대해서 쓰지 않습니다.
+- Notion의 만료형 첨부 URL은 장기 문서 링크로 사용하지 않고 Backend Evidence 또는 안정적인 Repository 자산을 우선합니다.
+
+## 6. Templates
+
+새 기록은 아래 양식을 기준으로 작성할 수 있습니다.
+
+- [Troubleshooting Template](./_templates/troubleshooting-template.md)
+- [Decision Template](./_templates/decision-template.md)
