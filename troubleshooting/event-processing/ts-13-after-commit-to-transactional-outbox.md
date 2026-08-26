@@ -1,4 +1,4 @@
-# AFTER_COMMIT 후속 작업 유실 가능성과 Transactional Outbox 전환
+# TS-13 — AFTER_COMMIT 후속 작업 유실 가능성과 Transactional Outbox 전환
 
 > 작성자: 김현승
 
@@ -78,5 +78,5 @@ durable intent
 
 ## 관련 문서
 
-- [ADR 0008 — ChatRoom Transactional Outbox](../../adr/0008-chat-room-transactional-outbox.md)
-- [핵심 거래/후속 작업 Case Study](../../case-studies/transaction-and-followup-failure-boundary.md)
+- [ADR-0008 — ChatRoom Transactional Outbox](../../adr/0008-chat-room-transactional-outbox.md)
+- [CS-03 — 핵심 거래/후속 작업 Case Study](../../case-studies/cs-03-transaction-and-followup-failure-boundary.md)

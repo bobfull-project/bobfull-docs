@@ -1,4 +1,4 @@
-# 비관적 락을 걸었는데도 예약이 CANCELLING에 멈춘 이유
+# TS-05 — 비관적 락을 걸었는데도 예약이 CANCELLING에 멈춘 이유
 
 > 작성자: 정용태, 배지현
 
@@ -52,5 +52,5 @@ Reservation CANCELLED
 
 ## 관련 문서
 
-- [예약 운영 정책 의사결정](../../decisions/reservation-auth-operational-decisions.md)
-- [환불 Dual-write 정합성](../payment/refund-dual-write-consistency.md)
+- [TD-02 — 예약 운영 정책 의사결정](../../decisions/td-02-reservation-auth-operational-decisions.md)
+- [TS-10 — 환불 Dual-write 정합성](../payment/ts-10-refund-dual-write-consistency.md)

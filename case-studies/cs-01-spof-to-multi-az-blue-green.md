@@ -1,4 +1,4 @@
-# 단일 EC2 SPOF에서 Multi-AZ Blue-Green까지
+# CS-01 — 단일 EC2 SPOF에서 Multi-AZ Blue-Green까지
 
 > 원본 분류: `[발표]` 트러블슈팅 · 작성자: 김홍기
 
@@ -85,5 +85,5 @@ Blue-Green 전환 검증에서는 **2,787건 연속 요청이 모두 HTTP 200**,
 - [단일 EC2 메모리 장애와 자원 분리](../engineering-records/resource-separation.md)
 - [Blue-Green 무중단 배포와 롤백](../engineering-records/blue-green-deployment.md)
 - [최종 운영 구조와 남은 고가용성 과제](../engineering-records/final-infrastructure-retrospective.md)
-- [ADR 0013 — Blue-Green Deployment](../adr/0013-blue-green-deployment.md)
-- [ADR 0018 — Kafka Dedicated EC2 over MSK](../adr/0018-kafka-dedicated-ec2-over-msk.md)
+- [ADR-0013 — Blue-Green Deployment](../adr/0013-blue-green-deployment.md)
+- [ADR-0018 — Kafka Dedicated EC2 over MSK](../adr/0018-kafka-dedicated-ec2-over-msk.md)

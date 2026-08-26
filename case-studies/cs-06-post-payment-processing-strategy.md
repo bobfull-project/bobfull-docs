@@ -1,7 +1,6 @@
-# 결제 확정 이후 후속 기능을 어떻게 처리할 것인가
+# CS-06 — 결제 확정 이후 후속 기능을 어떻게 처리할 것인가
 
-## AFTER_COMMIT, Transactional Outbox, Async, Kafka를 나눈 기준
-
+> 부제: AFTER_COMMIT, Transactional Outbox, Async, Kafka를 나눈 기준  
 > 원본 분류: `[발표]` 기술적 의사결정 · 작성자: 김현승
 
 ## 1. 시작점 — ChatRoom 실패가 핵심 거래를 되돌리면 안 된다
@@ -95,7 +94,7 @@ Kafka
 
 ## 관련 문서
 
-- [핵심 거래와 후속 작업 Case Study](./transaction-and-followup-failure-boundary.md)
-- [Outbox + Async vs Kafka Case Study](./outbox-async-vs-kafka.md)
-- [AFTER_COMMIT → Transactional Outbox](../troubleshooting/event-processing/after-commit-to-transactional-outbox.md)
-- [Email Outbox 요청 지연](../troubleshooting/event-processing/email-outbox-request-latency.md)
+- [CS-03 — 핵심 거래와 후속 작업 Case Study](./cs-03-transaction-and-followup-failure-boundary.md)
+- [CS-05 — Outbox + Async vs Kafka Case Study](./cs-05-outbox-async-vs-kafka.md)
+- [TS-13 — AFTER_COMMIT → Transactional Outbox](../troubleshooting/event-processing/ts-13-after-commit-to-transactional-outbox.md)
+- [TS-14 — Email Outbox 요청 지연](../troubleshooting/event-processing/ts-14-email-outbox-request-latency.md)

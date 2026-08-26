@@ -1,4 +1,4 @@
-# ChatRoom 생성 실패가 결제·예약 확정까지 롤백시킬 수 있던 문제
+# TS-12 — ChatRoom 생성 실패가 결제·예약 확정까지 롤백시킬 수 있던 문제
 
 > 작성자: 김현승
 
@@ -63,7 +63,7 @@ ChatRoom 실패
 
 `AFTER_COMMIT`은 재시도와 이벤트 영속화를 보장하지 않는다. Listener 실행 전 서버가 종료되면 “ChatRoom을 만들어야 한다”는 의도가 사라질 수 있다.
 
-V2에서는 조회 시 `createIfAbsent()` 복구를 두었고, V3에서는 이 한계를 [Transactional Outbox](./after-commit-to-transactional-outbox.md)로 고도화했다.
+V2에서는 조회 시 `createIfAbsent()` 복구를 두었고, V3에서는 이 한계를 [TS-13 — Transactional Outbox](./ts-13-after-commit-to-transactional-outbox.md)로 고도화했다.
 
 ## 배운 점
 

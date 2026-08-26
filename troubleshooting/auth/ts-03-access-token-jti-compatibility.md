@@ -1,4 +1,4 @@
-# Access Token jti 하위 호환 버그
+# TS-03 — Access Token jti 하위 호환 버그
 
 > 원본 버전: V2 · Issue #186 · 작성자: 정용태
 
@@ -43,4 +43,4 @@ JWT Claim이나 DB Column처럼 **이미 존재하는 데이터에 새 필수값
 
 ## 관련 문서
 
-- [예약 운영 정책과 인증 무효화 설계](../../decisions/reservation-auth-operational-decisions.md)
+- [TD-02 — 예약 운영 정책과 인증 무효화 설계](../../decisions/td-02-reservation-auth-operational-decisions.md)

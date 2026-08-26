@@ -1,4 +1,4 @@
-# 외부 PG–DB Dual-write로 발생한 환불 정합성 문제
+# TS-10 — 외부 PG–DB Dual-write로 발생한 환불 정합성 문제
 
 > 작성자: 김현승
 
@@ -71,6 +71,6 @@ Dual-write에서는 거대한 Transaction으로 원자성을 흉내 내기보다
 
 ## 관련 문서
 
-- [환불 Timeout Reconciliation](./refund-timeout-reconciliation.md)
-- [Reservation CANCELLING 동시성](../reservation/pessimistic-lock-cancelling-state.md)
-- [결제↔예약 의존 경계](../../decisions/payment-reservation-dependency-boundary.md)
+- [TS-11 — 환불 Timeout Reconciliation](./ts-11-refund-timeout-reconciliation.md)
+- [TS-05 — Reservation CANCELLING 동시성](../reservation/ts-05-pessimistic-lock-cancelling-state.md)
+- [TD-01 — 결제↔예약 의존 경계](../../decisions/td-01-payment-reservation-dependency-boundary.md)

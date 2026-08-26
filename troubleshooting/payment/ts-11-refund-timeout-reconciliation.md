@@ -1,4 +1,4 @@
-# 환불 Timeout 이후 PortOne 상태 재조회로 정합성 복구
+# TS-11 — 환불 Timeout 이후 PortOne 상태 재조회로 정합성 복구
 
 > 작성자: 김현승
 
@@ -110,5 +110,5 @@ PortOne 조회 결과가 계속 애매하면 자동 판단하지 않고 운영�
 
 ## 관련 문서
 
-- [PG–DB Dual-write](./refund-dual-write-consistency.md)
-- [READY Payment TOCTOU](./ready-payment-toctou.md)
+- [TS-10 — PG–DB Dual-write](./ts-10-refund-dual-write-consistency.md)
+- [TS-07 — READY Payment TOCTOU](./ts-07-ready-payment-toctou.md)

@@ -1,4 +1,4 @@
-# 결제↔예약 도메인의 순환 의존을 어떻게 풀었나
+# TD-01 — 결제↔예약 도메인의 순환 의존을 어떻게 풀었나
 
 > 원본 분류: 기술적 의사결정 · 작성자: 김현승
 
@@ -43,5 +43,5 @@ Spring Event는 결합도를 더 낮출 수 있지만 현재 완료 처리에서
 
 ## 관련 문서
 
-- [ADR 0005 — Domain Boundary Dependency Policy](../adr/0005-domain-boundary-dependency-policy.md)
-- [환불 Dual-write 정합성](../troubleshooting/payment/refund-dual-write-consistency.md)
+- [ADR-0005 — Domain Boundary Dependency Policy](../adr/0005-domain-boundary-dependency-policy.md)
+- [TS-10 — 환불 Dual-write 정합성](../troubleshooting/payment/ts-10-refund-dual-write-consistency.md)

@@ -1,4 +1,4 @@
-# 예약 운영 정책과 인증 무효화 설계
+# TD-02 — 예약 운영 정책과 인증 무효화 설계
 
 > 원본 제목: `예약 참여자 노쇼 처리, 관리자 전체 노쇼 현황 조회, 사장님(OWNER) 예약 전체 취소, 모집 마감 기한 후 자동 취소 스케줄러, Access Token Blacklist 및 로그아웃 즉시 무효화`  
 > 원본 분류: 기술적 의사결정 · 작성자: 정용태 · 관련 Issue: #48, #134, #46, #47, #186
@@ -47,5 +47,5 @@ Issue 작성 당시에는 “Reservation 즉시 CANCELLED, 실제 환불은 후�
 
 ## 관련 문서
 
-- [Access Token jti 하위 호환 버그](../troubleshooting/auth/access-token-jti-compatibility.md)
-- [비관적 락 이후에도 Reservation이 CANCELLING에 멈춘 문제](../troubleshooting/reservation/pessimistic-lock-cancelling-state.md)
+- [TS-03 — Access Token jti 하위 호환 버그](../troubleshooting/auth/ts-03-access-token-jti-compatibility.md)
+- [TS-05 — Reservation CANCELLING 동시성](../troubleshooting/reservation/ts-05-pessimistic-lock-cancelling-state.md)

@@ -1,4 +1,4 @@
-# PortOne SDK 동기 대기와 외부 API 예외 변환 미검증
+# TS-06 — PortOne SDK 동기 대기와 외부 API 예외 변환 미검증
 
 > 원본 Notion 페이지는 제목만 있고 본문이 비어 있어, Backend의 기존 `docs/troubleshooting/결제_트러블슈팅.md` 기록을 기준으로 복원했다. · 작성자: 김현승
 
@@ -40,6 +40,6 @@ Backend 원본 기록 자체도 이 항목을 “실제 연동 환경에서 충�
 
 ## 관련 문서
 
-- [환불 Timeout Reconciliation](./refund-timeout-reconciliation.md)
-- [Email 외부 I/O 스레드 격리](../event-processing/email-outbox-request-latency.md)
+- [TS-11 — 환불 Timeout Reconciliation](./ts-11-refund-timeout-reconciliation.md)
+- [TS-14 — Email 외부 I/O 스레드 격리](../event-processing/ts-14-email-outbox-request-latency.md)
 - [Backend 결제 트러블슈팅 원본](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/troubleshooting/%EA%B2%B0%EC%A0%9C_%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85.md)

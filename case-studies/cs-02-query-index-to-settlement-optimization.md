@@ -1,4 +1,4 @@
-# 조회 인덱스 부재에서 정산 조회 병목 해소까지
+# CS-02 — 조회 인덱스 부재에서 정산 조회 병목 해소까지
 
 > 원본 분류: `[발표]` 트러블슈팅 · 작성자: 정용태
 
@@ -82,7 +82,7 @@ Pool이 찬다 → CPU·DB·Lock을 함께 확인
 
 ## 관련 문서
 
-- [정산 조회 인덱스 개선](../performance/settlement-query-index.md)
-- [검색 Redis Cache](../performance/search-cache.md)
-- [인기 회차 조회 Hot-path](../performance/restaurant-view-hotpath.md)
-- [Query·Cache·Hikari 병목과 확장 판단](../engineering-records/performance-and-scaling.md)
+- [PF-02 — 정산 조회 인덱스 개선](../performance/settlement-query-index.md)
+- [PF-03 — 검색 Redis Cache](../performance/search-cache.md)
+- [PF-01 — 인기 회차 조회 Hot-path](../performance/restaurant-view-hotpath.md)
+- [ER-09 — Query·Cache·Hikari 병목과 확장 판단](../engineering-records/performance-and-scaling.md)

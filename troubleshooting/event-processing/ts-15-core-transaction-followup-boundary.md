@@ -1,8 +1,8 @@
-# 핵심 거래와 후속 작업의 실패 경계를 어떻게 나눌 것인가
+# TS-15 — 핵심 거래와 후속 작업의 실패 경계를 어떻게 나눌 것인가
 
 > 작성자: 김현승 · 5분 기록 보드의 상세 종합 기록
 
-이 문서는 ChatRoom → AFTER_COMMIT → Transactional Outbox → Email Async → Kafka로 이어진 세부 판단을 한 흐름으로 보존한다. 최종 발표용 정리본은 [Case Study](../../case-studies/transaction-and-followup-failure-boundary.md)에서 확인한다.
+이 문서는 ChatRoom → AFTER_COMMIT → Transactional Outbox → Email Async → Kafka로 이어진 세부 판단을 한 흐름으로 보존한다. 최종 발표용 정리본은 [CS-03 — Case Study](../../case-studies/cs-03-transaction-and-followup-failure-boundary.md)에서 확인한다.
 
 ## 1. 핵심 거래와 부가 기능의 실패 경계
 
@@ -77,6 +77,6 @@ AI       → Outbox + Kafka
 
 ## 관련 문서
 
-- [Outbox + Async vs Kafka Case Study](../../case-studies/outbox-async-vs-kafka.md)
-- [AFTER_COMMIT·Outbox·Kafka 선택 기준](../../case-studies/post-payment-processing-strategy.md)
-- [Performance 비교](../../performance/async-vs-kafka.md)
+- [CS-05 — Outbox + Async vs Kafka](../../case-studies/cs-05-outbox-async-vs-kafka.md)
+- [CS-06 — AFTER_COMMIT·Outbox·Kafka 선택 기준](../../case-studies/cs-06-post-payment-processing-strategy.md)
+- [PF-04 — Performance 비교](../../performance/async-vs-kafka.md)

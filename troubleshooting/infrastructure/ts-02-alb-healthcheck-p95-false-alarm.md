@@ -1,4 +1,4 @@
-# ALB Health Check 요청으로 발생한 p95 응답시간 알람 오탐 개선
+# TS-02 — ALB Health Check 요청으로 발생한 p95 응답시간 알람 오탐 개선
 
 > 작성자: 김홍기
 
@@ -32,4 +32,4 @@ ALB Health Check가 사용자 API p95 계산에서 제외돼 **인프라 상태 
 
 ## 관련 문서
 
-- [운영 관측 체계 구축](../../engineering-records/monitoring-observability.md)
+- [ER-07 — 운영 관측 체계 구축](../../engineering-records/monitoring-observability.md)

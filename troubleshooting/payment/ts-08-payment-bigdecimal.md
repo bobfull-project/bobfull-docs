@@ -1,4 +1,4 @@
-# 결제 금액 타입을 Long에서 BigDecimal로 변경한 이유
+# TS-08 — 결제 금액 타입을 Long에서 BigDecimal로 변경한 이유
 
 > 작성자: 김현승
 

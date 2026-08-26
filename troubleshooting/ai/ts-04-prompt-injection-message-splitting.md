@@ -1,4 +1,4 @@
-# Prompt Injection과 다중 메시지 분할을 이용한 AI 검수 우회 대응
+# TS-04 — Prompt Injection과 다중 메시지 분할을 이용한 AI 검수 우회 대응
 
 > 작성자: 김현승
 
@@ -68,5 +68,5 @@ Prompt Injection 문장 자체를 무조건 `FLAGGED`로 처리하지 않는다.
 
 ## 관련 문서
 
-- [AI 검수 최종 Case Study](../../case-studies/ai-moderation-optimization.md)
-- [ADR 0010 — Kafka Pipeline](../../adr/0010-chat-message-outbox-kafka-pipeline.md)
+- [CS-04 — AI 검수 최종 Case Study](../../case-studies/cs-04-ai-moderation-optimization.md)
+- [ADR-0010 — Kafka Pipeline](../../adr/0010-chat-message-outbox-kafka-pipeline.md)

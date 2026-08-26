@@ -1,7 +1,7 @@
-# ADR 0007 — S3 Presigned URL + Lambda 이미지 검증
+# ADR-0007 — S3 Presigned URL + Lambda 이미지 검증
 
 > 포트폴리오 요약본  
-> Source of Truth: [Backend ADR 0007](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/adr/0007-s3-presigned-restaurant-image-validation.md)
+> Source of Truth: [Backend ADR-0007](https://github.com/bobfull-project/bobfull-backend/blob/develop/docs/adr/0007-s3-presigned-restaurant-image-validation.md)
 
 ## 배경
 
@@ -52,4 +52,4 @@ App 자원과 파일 검증 책임을 분리하는 대신 Lambda 배포·CloudWa
 
 ## 관련 문서
 
-- [이미지 업로드 파이프라인 기술 기록](../engineering-records/image-upload-pipeline.md)
+- [ER-02 — 이미지 업로드 파이프라인 기술 기록](../engineering-records/image-upload-pipeline.md)

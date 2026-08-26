@@ -1,4 +1,4 @@
-# 핵심 거래와 후속 작업의 실패를 어떻게 나눴는가
+# CS-03 — 핵심 거래와 후속 작업의 실패를 어떻게 나눴는가
 
 > 원본 분류: `[발표]` 트러블슈팅 · 작성자: 김현승
 
@@ -99,7 +99,7 @@ Kafka
 
 ## 관련 문서
 
-- [ChatRoom 실패가 핵심 거래까지 롤백시키던 문제](../troubleshooting/event-processing/chatroom-rollback-boundary.md)
-- [AFTER_COMMIT에서 Transactional Outbox로](../troubleshooting/event-processing/after-commit-to-transactional-outbox.md)
-- [Email Outbox 동기 처리 지연](../troubleshooting/event-processing/email-outbox-request-latency.md)
-- [ADR 0008 — ChatRoom Transactional Outbox](../adr/0008-chat-room-transactional-outbox.md)
+- [TS-12 — ChatRoom 실패가 핵심 거래까지 롤백시키던 문제](../troubleshooting/event-processing/ts-12-chatroom-rollback-boundary.md)
+- [TS-13 — AFTER_COMMIT에서 Transactional Outbox로](../troubleshooting/event-processing/ts-13-after-commit-to-transactional-outbox.md)
+- [TS-14 — Email Outbox 동기 처리 지연](../troubleshooting/event-processing/ts-14-email-outbox-request-latency.md)
+- [ADR-0008 — ChatRoom Transactional Outbox](../adr/0008-chat-room-transactional-outbox.md)

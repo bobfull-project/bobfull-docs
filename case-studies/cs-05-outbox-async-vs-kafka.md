@@ -1,4 +1,4 @@
-# AI 후속 처리도 Outbox + Async면 충분한데 Kafka까지 필요한가?
+# CS-05 — Outbox + Async면 충분한데 Kafka까지 필요한가?
 
 > 원본 분류: `[발표]` 기술적 의사결정 · 작성자: 김현승
 
@@ -77,6 +77,6 @@ Kafka
 
 ## 관련 문서
 
-- [Performance — Outbox + Async vs Kafka](../performance/async-vs-kafka.md)
-- [ADR 0010 — Chat Message Outbox Kafka Pipeline](../adr/0010-chat-message-outbox-kafka-pipeline.md)
-- [AFTER_COMMIT·Outbox·Kafka 선택 기준](./post-payment-processing-strategy.md)
+- [PF-04 — Outbox + Async vs Kafka](../performance/async-vs-kafka.md)
+- [ADR-0010 — Chat Message Outbox Kafka Pipeline](../adr/0010-chat-message-outbox-kafka-pipeline.md)
+- [CS-06 — AFTER_COMMIT·Outbox·Kafka 선택 기준](./cs-06-post-payment-processing-strategy.md)

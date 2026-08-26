@@ -1,4 +1,4 @@
-# 예약과 결제의 책임을 분리한 이유
+# TS-09 — 예약과 결제의 책임을 분리한 이유
 
 > 관련 Issue #91 / PR #98 · 작성자: 김현승
 
@@ -49,4 +49,4 @@ Command·Result·Interface가 추가돼 처음에는 코드가 더 많아 보인
 
 ## 관련 문서
 
-- [결제↔예약 순환 의존 의사결정](../../decisions/payment-reservation-dependency-boundary.md)
+- [TD-01 — 결제↔예약 순환 의존 의사결정](../../decisions/td-01-payment-reservation-dependency-boundary.md)

@@ -1,7 +1,7 @@
-# Project ADR — 검색 API 동적 조건 처리를 QueryDSL로 구현
+# P-ADR-001 — 검색 API 동적 조건 처리를 QueryDSL로 구현
 
 > 원본 분류: ADR · 작성자: 김홍기 · 관련 버전: V1 · Issue #35 / PR #106  
-> 이 문서는 5분 기록 보드의 Project ADR을 보존한 문서이며, 현재 Backend의 번호형 ADR 0001~0019와는 별도 기록이다.
+> 이 문서는 5분 기록 보드의 Project ADR을 보존한 문서이며, 현재 Backend의 번호형 ADR-0001~ADR-0019와는 별도 기록이다.
 
 ## 배경
 
@@ -52,5 +52,5 @@ V1에서는 정확한 응답을 우선해 일부 계산을 서브쿼리 기반�
 
 ## 관련 문서
 
-- [검색/정산 성능 Case Study](../case-studies/query-index-to-settlement-optimization.md)
-- [검색 Redis Cache](../performance/search-cache.md)
+- [CS-02 — 검색/정산 성능 Case Study](../case-studies/cs-02-query-index-to-settlement-optimization.md)
+- [PF-03 — 검색 Redis Cache](../performance/search-cache.md)

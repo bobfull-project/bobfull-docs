@@ -1,4 +1,4 @@
-# AI 검수: 불필요한 호출을 줄이고 우회 검수를 보완하기
+# CS-04 — AI 검수 호출 최적화와 우회 검수 보완
 
 > 원본 분류: `[발표]` 트러블슈팅 · 작성자: 김현승
 
@@ -75,5 +75,5 @@ Context의 Source of Truth도 Kafka 처리 순서가 아니라 DB ChatMessage �
 
 ## 관련 문서
 
-- [Prompt Injection·Split Message 대응](../troubleshooting/ai/prompt-injection-message-splitting.md)
-- [ADR 0010 — Chat Message Outbox + Kafka Pipeline](../adr/0010-chat-message-outbox-kafka-pipeline.md)
+- [TS-04 — Prompt Injection·Split Message 대응](../troubleshooting/ai/ts-04-prompt-injection-message-splitting.md)
+- [ADR-0010 — Chat Message Outbox + Kafka Pipeline](../adr/0010-chat-message-outbox-kafka-pipeline.md)

@@ -1,4 +1,4 @@
-# READY Payment 만료 검증과 PortOne 호출 사이의 경쟁 조건 (TOCTOU)
+# TS-07 — READY Payment 만료 검증과 PortOne 호출 사이의 경쟁 조건 (TOCTOU)
 
 > 작성자: 김현승
 
@@ -67,5 +67,5 @@ Lock을 얻은 뒤 현재 시간을 다시 가져와 만료 여부를 확인한�
 
 ## 관련 문서
 
-- [ADR 0001 — 좌석 정합성](../../adr/0001-reservation-seat-consistency.md)
-- [환불 Timeout Reconciliation](./refund-timeout-reconciliation.md)
+- [ADR-0001 — 좌석 정합성](../../adr/0001-reservation-seat-consistency.md)
+- [TS-11 — 환불 Timeout Reconciliation](./ts-11-refund-timeout-reconciliation.md)

@@ -1,4 +1,4 @@
-# 이메일 Outbox 동기 처리로 인한 요청 지연
+# TS-14 — 이메일 Outbox 동기 처리로 인한 요청 지연
 
 > 작성자: 김현승
 
@@ -83,5 +83,5 @@ Timeout
 
 ## 관련 문서
 
-- [핵심 거래/후속 작업 Case Study](../../case-studies/transaction-and-followup-failure-boundary.md)
-- [AFTER_COMMIT → Outbox](./after-commit-to-transactional-outbox.md)
+- [CS-03 — 핵심 거래/후속 작업 Case Study](../../case-studies/cs-03-transaction-and-followup-failure-boundary.md)
+- [TS-13 — AFTER_COMMIT → Outbox](./ts-13-after-commit-to-transactional-outbox.md)

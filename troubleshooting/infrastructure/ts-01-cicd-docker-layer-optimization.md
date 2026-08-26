@@ -1,4 +1,4 @@
-# CI/CD Pipeline 및 Docker Layer 구조 개선
+# TS-01 — CI/CD Pipeline 및 Docker Layer 구조 개선
 
 > 원본: `[배포 최적화] CI/CD Pipeline 및 Docker Layer 구조 개선` · 작성자: 김홍기
 
@@ -81,5 +81,5 @@ Application Resource를 변경해 재빌드했을 때 Dependency Layer는 Cache�
 
 ## 관련 문서
 
-- [CI/CD 기술 기록](../../engineering-records/cicd-evolution.md)
-- [SPOF → Blue-Green Case Study](../../case-studies/spof-to-multi-az-blue-green.md)
+- [ER-05 — CI/CD 기술 기록](../../engineering-records/cicd-evolution.md)
+- [CS-01 — SPOF → Blue-Green](../../case-studies/cs-01-spof-to-multi-az-blue-green.md)
