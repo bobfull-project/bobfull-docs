@@ -1,33 +1,46 @@
-# 🧭 기술 기록
+# 📝 Engineering Records
 
-BobFull 프로젝트를 진행하며 남긴 Velog 기록과 최종 Evidence를 바탕으로, **문제 → 판단 → 적용 → 검증 → 남은 한계** 흐름이 보이도록 다시 정리한 기술 기록입니다.
+BobFull 프로젝트를 진행하며 남긴 작업 기록과 최종 Evidence를 바탕으로 **문제 → 판단 → 적용 → 검증 → 남은 한계** 흐름이 보이도록 재구성한 기술 기록입니다.
 
-Velog 글을 시간순으로 그대로 복사하지 않고, 여러 글에 흩어진 내용을 하나의 기술 주제로 합쳤습니다. 수치와 최종 상태가 바뀐 항목은 `bobfull-backend/docs/evidence/v3`와 현재 운영 문서를 우선 기준으로 정리합니다.
+이 디렉터리의 역할은 개별 버그나 공식 의사결정을 다시 복사하는 것이 아니라 **프로젝트 구조가 어떻게 발전했는지** 보여주는 것입니다.
 
 ## 문서 목록
 
-| 구분 | 문서 | 핵심 내용 |
-|---|---|---|
-| 인프라 | [[인프라] AWS 인프라 발전 과정](./infrastructure-evolution.md) | V1 단일 EC2에서 최종 Blue-Green App 2대 구조까지 |
-| 인프라 | [[인프라] Presigned URL과 Lambda 이미지 검증 파이프라인](./image-upload-pipeline.md) | Browser → S3 직접 업로드와 Lambda 검증 책임 분리 |
-| 장애대응 | [[인프라] 단일 EC2 메모리 장애와 자원 분리](./resource-separation.md) | 메모리 경쟁 장애, Redis·Kafka 분리, App 장애 우회 검증 |
-| 배포 | [[배포] 운영 환경 분리와 HTTPS 진입 구조](./environment-and-https.md) | Spring Profile, Parameter Store, SSM, ALB/HTTPS |
-| 배포 | [[배포] GitHub Actions CI/CD 구축과 배포 과정 최적화](./cicd-evolution.md) | 수동 배포 자동화, 중복 Build·고정 대기·Docker Layer 개선 |
-| 배포 | [[배포] Blue-Green 무중단 배포와 롤백](./blue-green-deployment.md) | 비활성 환경 검증, 트래픽 전환, 자동 롤백과 Connection 절감 |
-| 모니터링 | [[모니터링] 운영 관측 체계 구축](./monitoring-observability.md) | CloudWatch Logs + Prometheus + Grafana + Slack 역할 분리 |
-| 실시간 | [[실시간] 다중 App 채팅과 Redis Pub/Sub](./realtime-multi-app-chat.md) | WebSocket/STOMP 다중 인스턴스 전달과 DB 복구 경계 |
-| 성능 | [[성능] Query·Cache·Hikari 병목과 확장 판단](./performance-and-scaling.md) | 쿼리·인덱스·캐시 실측과 Auto Scaling 미도입 근거 |
-| 최종정리 | [[인프라] 최종 운영 구조와 남은 고가용성 과제](./final-infrastructure-retrospective.md) | 최종 운영 범위, 실제 검증 캡처, RDS·Redis·Kafka TODO |
+| ID | 구분 | 문서 | 핵심 내용 |
+|---|---|---|---|
+| **ER-01** | 인프라 | [[인프라] AWS 인프라 발전 과정](./infrastructure-evolution.md) | V1 단일 EC2에서 최종 Blue-Green App 구조까지 |
+| **ER-02** | 인프라 | [[인프라] Presigned URL과 Lambda 이미지 검증 파이프라인](./image-upload-pipeline.md) | Browser → S3 직접 업로드와 Lambda 검증 책임 분리 |
+| **ER-03** | 장애대응 | [[인프라] 단일 EC2 메모리 장애와 자원 분리](./resource-separation.md) | 메모리 경쟁 장애, Redis·Kafka 분리, App 장애 우회 |
+| **ER-04** | 배포 | [[배포] 운영 환경 분리와 HTTPS 진입 구조](./environment-and-https.md) | Spring Profile, Parameter Store, SSM, ALB/HTTPS |
+| **ER-05** | 배포 | [[배포] GitHub Actions CI/CD 구축과 배포 과정 최적화](./cicd-evolution.md) | 수동 배포 자동화, 중복 Build·고정 대기·Layer 개선 |
+| **ER-06** | 배포 | [[배포] Blue-Green 무중단 배포와 롤백](./blue-green-deployment.md) | 비활성 환경 검증, Traffic Switch, Rollback, Connection 절감 |
+| **ER-07** | 모니터링 | [[모니터링] 운영 관측 체계 구축](./monitoring-observability.md) | CloudWatch + Prometheus + Grafana + Slack 역할 분리 |
+| **ER-08** | 실시간 | [[실시간] 다중 App 채팅과 Redis Pub/Sub](./realtime-multi-app-chat.md) | WebSocket/STOMP 다중 인스턴스 전달과 DB 복구 경계 |
+| **ER-09** | 성능 | [[성능] Query·Cache·Hikari 병목과 확장 판단](./performance-and-scaling.md) | 쿼리·인덱스·캐시 실측과 확장 판단 |
+| **ER-10** | 최종정리 | [[인프라] 최종 운영 구조와 남은 고가용성 과제](./final-infrastructure-retrospective.md) | 최종 운영 범위, 검증 캡처, RDS·Redis·Kafka TODO |
 
-## 읽는 기준
+> 기존 `engineering-records/` 파일 경로는 외부 링크 호환을 위해 유지하고, 탐색용 ID만 `ER-xx`로 통일합니다.
 
-- 이 문서는 **포트폴리오용 서술 기록**입니다.
-- 상세 구현 계약과 원본 Evidence는 [Backend Evidence](https://github.com/bobfull-project/bobfull-backend/tree/develop/docs/evidence/v3)를 기준으로 합니다.
-- ADR 자체가 필요한 결정은 [ADR](../adr/README.md), 성능 수치 중심 문서는 [Performance](../performance/README.md)에서 별도로 확인할 수 있습니다.
-- 전체 운영 구조는 [System Architecture](../architecture/system-architecture.md)를 기준으로 합니다.
-- Velog 캡처는 설명과 가까운 위치에 그대로 연결해, 당시 운영·검증 화면을 함께 볼 수 있게 했습니다.
+## 다른 문서와의 경계
 
-## 원본 기록
+- 발표용으로 최종 정제한 대표 스토리 → [Case Studies](../case-studies/README.md)
+- 하나의 구체적인 장애·버그·병목 → [Troubleshooting](../troubleshooting/README.md)
+- 공식/프로젝트 기술 결정 → [ADR](../adr/README.md), [Technical Decisions](../decisions/README.md)
+- 측정 수치와 실험 조건 → [Performance](../performance/README.md)
+- 전체 운영 구조 → [System Architecture](../architecture/system-architecture.md)
 
-- [Velog - gpekd5](https://velog.io/@gpekd5/posts)
-- [최종 기록 - 단일 EC2 SPOF에서 Multi-AZ Blue-Green까지](https://velog.io/@gpekd5/%EC%B5%9C%EC%A2%85-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%ED%8A%B8%EB%9F%AC%EB%B8%94%EC%8A%88%ED%8C%85-%EB%8B%A8%EC%9D%BC-EC2-SPOF%EC%97%90%EC%84%9C-Multi-AZ-Blue-Green%EA%B9%8C%EC%A7%80)
+같은 사건이 여러 관점에 등장하더라도 본문을 중복 복사하지 않고 **역할에 맞는 문서로 링크**합니다.
+
+## 대표 연결
+
+- ER-03 단일 EC2 장애와 자원 분리 → [CS-01 — SPOF → Multi-AZ Blue-Green](../case-studies/cs-01-spof-to-multi-az-blue-green.md)
+- ER-09 Query/Cache/Pool 최적화 → [CS-02 — 검색·정산 성능](../case-studies/cs-02-query-index-to-settlement-optimization.md)
+- ER-06 Blue-Green → [ADR-0013](../adr/0013-blue-green-deployment.md)
+- ER-02 이미지 Pipeline → [ADR-0007](../adr/0007-s3-presigned-restaurant-image-validation.md)
+
+## 관리 기준
+
+- Velog/Notion의 시간순 기록을 그대로 복제하지 않습니다.
+- 최신 수치와 최종 상태는 `bobfull-backend/docs/evidence/v3`와 운영 문서를 우선합니다.
+- 당시 캡처가 필요한 경우 장기적으로 유지 가능한 Repository 자산 또는 공개 Evidence 링크를 사용합니다.
+- RDS Single-AZ, Kafka 단일 Broker 등 현재 한계를 그대로 적고 검증하지 않은 HA를 주장하지 않습니다.
